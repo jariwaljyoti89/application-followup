@@ -2,7 +2,10 @@
 
 class Interview
 {
-	public $title = 'Interview test';
+	/*
+		Variable $title was used as static variable but not defined static 
+	*/
+	public static $title = 'Interview test';
 }
 
 $lipsum = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus incidunt, quasi aliquid, quod officia commodi magni eum? Provident, sed necessitatibus perferendis nisi illum quos, incidunt sit tempora quasi, pariatur natus.';
@@ -15,7 +18,13 @@ $people = array(
 	array('id'=>5, 'first_name'=>'Doug', 'last_name'=>'Simons', 'email'=>'doug.simons@hotmail.com')
 );
 
-$person = $_POST['person'];
+
+/*
+	Form method is used as GET but POST was used in code
+*/
+if (isset($_GET['person'])) {
+		$person = $_GET['person'];
+}
 
 ?>
 
@@ -29,13 +38,21 @@ $person = $_POST['person'];
 	</style>
 </head>
 <body>
-
-	<h1><?=Interview::$title;?></h1>
+	
+	
+	<h1><?= Interview::$title; ?></h1>
 
 	<?php
+	/*
+		Variable $i was intialized with 10 and compared less than zero thats why loop was not working 
+	*/
 	// Print 10 times
-	for ($i=10; $i<0; $i++) {
-		echo '<p>'+$lipsum+'</p>';
+	for ($i=10; $i>0; $i--) {
+		
+	/*
+		Wrong concatenation operator was used
+	*/
+		echo '<p>'.$lipsum.'</p>';
 	}
 	?>
 
@@ -50,7 +67,12 @@ $person = $_POST['person'];
 		<p><input type="submit" value="Submit" /></p>
 	</form>
 
-	<?php if ($person): ?>
+	<?php 
+		/*
+			Condition should work when $person is set.
+		*/
+		if (isset($person)): 
+	?>
 		<p><strong>Person</strong> <?=$person['first_name'];?>, <?=$person['last_name'];?>, <?=$person['email'];?></p>
 	<?php endif; ?>
 
@@ -67,11 +89,16 @@ $person = $_POST['person'];
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($people as $person): ?>
+			<?php 
+				/*
+					$person was an array but was used as object
+				*/
+				foreach ($people as $person): 
+			?>
 				<tr>
-					<td><?=$person->first_name;?></td>
-					<td><?=$person->last_name;?></td>
-					<td><?=$person->email;?></td>
+					<td><?=$person['first_name'];?></td>
+					<td><?=$person['last_name'];?></td>
+					<td><?=$person['email'];?></td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
